@@ -1,6 +1,5 @@
 ﻿using ems_backend.Common.DefaultConstants;
-using ems_backend.Common.Midlewares;
-using ems_backend.Data.DataContext;
+using ems_backend.Common.Midlewares;    
 using ems_backend.Extensions;
 using Microsoft.EntityFrameworkCore;
 
