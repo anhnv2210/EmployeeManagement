@@ -1,9 +1,7 @@
 ﻿using ems_backend.Data.DataContext;
-using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.ChucDanhRequest;
-using ems_backend.Models.Response;
 using ems_backend.Models.ResponseModels.DataChucDanh;
 using ems_backend.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +11,15 @@ namespace ems_backend.Service.Implements
     public class ChucDanhService : IChucDanhService
     {
         private readonly AppDbContext _context;
-        private readonly ResponseObject<DataResponseChucDanh> _responseObject;
-        public ChucDanhService(AppDbContext context, ResponseObject<DataResponseChucDanh> responseObject, ChucDanhConverter converter)
+        public ChucDanhService(AppDbContext context)
         {
             _context = context;
-            _responseObject = responseObject;
         }
 
+        public async Task<bool> CheckTenChucDanhExists(string tenChucDanh)
+        {
+            return await _context.ChucDanhs.AnyAsync(c => c.TenChucDanh.ToLower() == tenChucDanh.ToLower());
+        }
         public async Task<DataResponseChucDanh> LayChucDanhTheoId(int id)
         {
             var chucDanh = await _context.ChucDanhs
@@ -48,7 +48,6 @@ namespace ems_backend.Service.Implements
 
             chucDanh.TenChucDanh = request.TenChucDanh;
             chucDanh.MoTa = request.MoTa;
-            chucDanh.NguoiTaoId = request.NguoiTaoId;
             chucDanh.NguoiCapNhatId = request.NguoiCapNhatId;
             chucDanh.IsActive = request.IsActive;
             chucDanh.NgayCapNhat = DateTime.Now;

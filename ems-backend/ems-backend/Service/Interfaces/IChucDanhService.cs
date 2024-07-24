@@ -11,5 +11,6 @@ namespace ems_backend.Service.Interfaces
         Task<DataResponseChucDanh> ThemChucDanh(Request_ThemChucDanh request);
         Task<DataResponseChucDanh> SuaChucDanh(int id,Request_SuaChucDanh request);
         Task<bool> XoaChucDanh(int id);
+        Task<bool> CheckTenChucDanhExists(string tenChucDanh);
     }
 }

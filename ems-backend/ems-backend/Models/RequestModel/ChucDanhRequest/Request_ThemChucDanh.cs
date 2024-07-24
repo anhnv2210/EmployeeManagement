@@ -7,6 +7,5 @@
         public int NguoiTaoId { get; set; }
         public int NguoiCapNhatId {  get; set; }
         public bool IsActive { get; set; }
-
     }
 }

@@ -1,8 +1,6 @@
-﻿using ems_backend.Models.Entities;
-using ems_backend.Models.RequestModel.ChucDanhRequest;
+﻿using ems_backend.Models.RequestModel.ChucDanhRequest;
 using ems_backend.Models.ResponseModels.DataChucDanh;
 using ems_backend.Service.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ems_backend.Controllers
@@ -38,8 +36,13 @@ namespace ems_backend.Controllers
             {
                 return BadRequest(ModelState);
             }
+            var exists = await _service.CheckTenChucDanhExists(request.TenChucDanh);
+            if (exists)
+            {
+                return Conflict("Tên chức danh đã tồn tại.");
+            }
             var chucDanh = await _service.ThemChucDanh(request);
-            return CreatedAtAction(nameof(GetChucDanh), new { id = chucDanh.Id}, chucDanh);
+            return CreatedAtAction(nameof(GetChucDanh), new { id = chucDanh.Id }, chucDanh);
         }
 
         [HttpPut("{id}")]
@@ -50,13 +53,20 @@ namespace ems_backend.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await _service.SuaChucDanh(id, request);
-            if (result == null)
+            try
             {
-                return StatusCode(500, "A problem happened while handling your request.");
-            }
+                var result = await _service.SuaChucDanh(id, request);
+                if (result == null)
+                {
+                    return StatusCode(500, "A problem happened while handling your request.");
+                }
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error.");
+            }
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> XoaChucDanh(int id)
@@ -68,6 +78,12 @@ namespace ems_backend.Controllers
             }
 
             return NotFound();
+        }
+        [HttpGet("check-ten")]
+        public async Task<IActionResult> CheckTenChucDanh([FromQuery] string tenChucDanh)
+        {
+            var exists = await _service.CheckTenChucDanhExists(tenChucDanh);
+            return Ok(new { exists });
         }
     }
 }
