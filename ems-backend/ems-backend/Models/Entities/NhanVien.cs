@@ -17,6 +17,8 @@
         public virtual QuanHuyen? QuanHuyen { get; set; }
         public int? TinhThanhId { get; set; }
         public virtual TinhThanh? TinhThanh { get; set; }
+        public int? QuocGiaId { get; set; }
+        public virtual QuocGia? QuocGia { get; set; }
         public int? NganHangId { get; set; }
         public virtual NganHang? NganHang { get; set; }
         public int? ChiNhanhNganHangId { get; set; }

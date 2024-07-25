@@ -29,6 +29,7 @@ namespace ems_backend.Data.DataContext
         public DbSet<PhongBan> PhongBans { get; set; }
         public DbSet<PhuCap> PhuCaps { get; set; }
         public DbSet<QuanHuyen> QuanHuyens { get; set; }
+        public DbSet<QuocGia> QuocGias { get; set; }
         public DbSet<QuyetDinh> QuyetDinhs { get; set; }
         public DbSet<TaiSan> TaiSans { get; set; }
         public DbSet<TapTinDinhKem> TapTinDinhKems { get; set; }
@@ -97,6 +98,16 @@ namespace ems_backend.Data.DataContext
                 .HasForeignKey(c => c.NguoiCapNhatId)
                 .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<PhongBan>()
+                .HasOne(c => c.NguoiTao)
+                .WithMany()
+                .HasForeignKey(c => c.NguoiTaoId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<QuocGia>()
+                .HasOne(c => c.NguoiCapNhat)
+                .WithMany()
+                .HasForeignKey(c => c.NguoiCapNhatId)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<QuocGia>()
                 .HasOne(c => c.NguoiTao)
                 .WithMany()
                 .HasForeignKey(c => c.NguoiTaoId)

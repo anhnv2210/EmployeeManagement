@@ -3,6 +3,9 @@
     public class TinhThanh : BaseEntity
     {
         public string TenTinhThanh { get; set; }
+        public string MoTa { get; set; }
+        public int? QuocGiaId {  get; set; }
+        public QuocGia? QuocGia { get; set; }
         public int NguoiTaoId { get; set; }
         public DateTime? NgayTao { get; set; }
         public int NguoiCapNhatId { get; set; }
