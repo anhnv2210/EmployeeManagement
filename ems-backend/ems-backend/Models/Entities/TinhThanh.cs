@@ -14,6 +14,7 @@
         public NhanVien? NguoiCapNhat { get; set; }
         public bool IsActive { get; set; }
         public virtual ICollection<QuanHuyen>? QuanHuyens { get; set; }
+        public virtual ICollection<XaPhuong>? XaPhuongs { get; set; }
         public virtual ICollection<NhanVien>? NhanViens { get; set; }
     }
 }

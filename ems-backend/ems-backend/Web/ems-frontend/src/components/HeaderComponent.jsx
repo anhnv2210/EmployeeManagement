@@ -1,57 +1,77 @@
-import React from 'react'
+import React, { useState } from 'react'
 const HeaderComponent = () => {
 
-  const navbarStyle = {
-    backgroundColor : '#ffcc00'
-  };
+    const [showDanhMuc, setShowDanhMuc] = useState  (false);
+    const [showNghiepVu, setShowNghiepVu] = useState(false);
 
-  return (
-    <div>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light" style={navbarStyle}>
-        <div className="container-fluid">
-          <a className="navbar-brand" href="/">Hồ sơ nhân sự</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">Thông tin nhân sự</a>
-              </li>
-              {/* <li className="nav-item">
-                <a className="nav-link" href="#">Link</a>
-              </li> */}
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Danh mục
-                </a>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a className="dropdown-item" href="/chucdanh">Chức danh</a></li>
-                  <li><a className="dropdown-item" href="#">Phong ban</a></li>
-                  <li><a className="dropdown-item" href="#">Loại hợp đồng</a></li>
-                  <li><a className="dropdown-item" href="#">Ngân hàng</a></li>
-                  <li><a className="dropdown-item" href="#">Chi nhánh ngân hàng</a></li>
-                  <li><a className="dropdown-item" href="#">Nơi khám bệnh</a></li>
-                  <li><a className="dropdown-item" href="#">Tỉnh thành</a></li>
-                  <li><a className="dropdown-item" href="#">Quận huyện</a></li>
-                  <li><a className="dropdown-item" href="#">Xã phường</a></li>
-                  <li><hr className="dropdown-divider" /></li>
-                  <li><a className="dropdown-item" href="#">Danh mục khác</a></li>
-                </ul>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link disabled" href="#" tabIndex="-1" aria-disabled="true">Báo cáo</a>
-              </li>
-            </ul>
-            <form className="d-flex">
-              <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-              <button className="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </div>
+    const toggleDanhMuc = () => setShowDanhMuc(!showDanhMuc && !showNghiepVu);
+    const toggleNghiepVu = () => setShowNghiepVu(!showNghiepVu && !showDanhMuc);
+
+    return (
+        <div>
+            <nav className="bg-white shadow">
+                <div className="container mx-auto px-4 py-2 flex flex-wrap items-center justify-between">
+                    <a className="text-2xl font-semibold text-gray-800" href="/">Hồ sơ nhân sự</a>
+                    <button className="block lg:hidden p-2 text-gray-800 focus:outline-none" type="button">
+                        <span className="material-icons">menu</span>
+                    </button>
+                    <div className="w-full lg:flex lg:items-center lg:w-auto hidden lg:block" id="navbarSupportedContent">
+                        <ul className="lg:flex lg:space-x-6 mt-4 lg:mt-0">
+                            <li className="relative group">
+                                <button onClick={toggleDanhMuc} className="block py-2 text-gray-700 hover:text-gray-900 focus:outline-none">
+                                    Danh mục
+                                </button>
+                                {showDanhMuc && (
+                                    <ul className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2">
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="/chucdanh">Chức danh</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Phòng ban</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Loại hợp đồng</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Ngân hàng</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Chi nhánh ngân hàng</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Nơi khám bệnh</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Tỉnh thành</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Quận huyện</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Xã phường</a></li>
+                                        <li><hr className="border-gray-200" /></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Danh mục khác</a></li>
+                                    </ul>
+                                )}
+                            </li>
+                            <li className="relative group">
+                                <button onClick={toggleNghiepVu} className="block py-2 text-gray-700 hover:text-gray-900 focus:outline-none">
+                                    Nghiệp vụ
+                                </button>
+                                {showNghiepVu && (
+                                    <ul className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2">
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="/chucdanh">Hồ sơ nhân viên</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Thông tin các quá trình trong HSNV</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Thông tin công tác – lương</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Phụ cấp</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Phúc lợi</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Hợp đồng lao động</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Cấp phát tài sản</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Kỷ luật</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Khen thưởng</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Nghỉ việc</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Tệp tin đính kèm</a></li>
+                                    </ul>
+                                )}
+                            </li>
+                            <li>
+                                <a className="block py-2 text-gray-700 hover:text-gray-900" href="#" tabIndex="-1" aria-disabled="true">Báo cáo</a>
+                            </li>
+                        </ul>
+                        <form className="mt-4 lg:mt-0 lg:ml-8 relative">
+                            <input className="block w-full pl-4 pr-4 py-2 border rounded-md" type="search" placeholder="Search" aria-label="Search" />
+                            <button className="absolute inset-y-0 left-0 flex items-center pl-3" type="submit">
+                                <span className="material-icons"></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
         </div>
-      </nav>
-    </div>
-  )
+    );
 }
 
 export default HeaderComponent

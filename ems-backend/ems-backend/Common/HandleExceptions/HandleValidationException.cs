@@ -5,33 +5,27 @@ namespace ems_backend.Common.HandleExceptions
 {
     public class HandleValidationException
     {
-        public static void ValidateEmail(string email)
+        public static bool ValidateEmail(string email)
         {
             var emailValidator = new EmailAddressAttribute();
             if (!emailValidator.IsValid(email))
             {
-                throw new ValidationException(Constants.ExceptionMessage.INVALID_EMAIL);
+                return false;
             }
             if (email.Length > 50)
             {
-                throw new ValidationException("Độ dài email không dài quá 50 ký tự");
+                return false;
             }
-
+            return true;
         }
 
-        public static void ValidatePhoneNumber(string phoneNumber)
+        public static bool ValidatePhoneNumber(string phoneNumber)
         {
             if (phoneNumber.Length != 10)
             {
-                throw new ValidationException("Số điện thoại phải đủ 10 ký tự");
+                return false ;
             }
-        }
-        public static void ValidateName(string name)
-        {
-            if (name.Length > 50)
-            {
-                throw new ValidationException("Độ dài tên không dài quá 50 ký tự");
-            }
+            return true;
         }
     }
 }
