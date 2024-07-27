@@ -1,22 +1,19 @@
-import React, {useEffect, useState} from 'react'
-import { deleteChucDanh, listChucDanh } from '../../services/ChucDanhService'
-import {format} from 'date-fns'
-import {Link,useNavigate} from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { deleteChucDanh, listChucDanh } from '../../services/ChucDanhService';
+import { format } from 'date-fns';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ChucDanhListComponent = () => {
-
     const [chucDanhs, setChucDanhs] = useState([]);
-
-    const navigator = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         listChucDanh().then((response) => {
             setChucDanhs(response.data);
         }).catch(error => {
             console.error(error);
-        })
-
-    }, [])
+        });
+    }, []);
 
     const handleDelete = (id) => {
         if (window.confirm("Bạn có chắc chắn muốn xóa chức danh này?")) {
@@ -26,57 +23,56 @@ const ChucDanhListComponent = () => {
                 console.error("Error deleting ChucDanh:", error.response ? error.response.data : error.message);
             });
         }
-    }
+    };
 
-    function themChucDanh(){
-        navigator('/them-chucdanh')
-    }
+    const themChucDanh = () => {
+        navigate('/them-chuc-danh');
+    };
 
-  return (
-    <div className='container mt-5'>
-        <h2 className='text-center mb-4'>Danh sách chức danh</h2>
-        <button className='btn btn-primary mb-2' onClick={themChucDanh}>Thêm mới</button>
-        <table className='table table-striped table-bordered'>
-            <thead className='text-center'>
-                <tr>
-                    <th>Id</th>
-                    <th>Tên chức danh</th>
-                    <th>Mô tả</th>
-                    <th>Người tạo</th>
-                    <th>Ngày tạo</th>
-                    <th>Người cập nhật</th>
-                    <th>Ngày cập nhật</th>
-                    <th>Trạng thái</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    chucDanhs.map(chucDanh => 
+    return (
+        <div className="container mx-auto mt-5 min-h-screen">
+            <h2 className="text-3xl font-bold text-center mb-6">Danh sách Chức Danh</h2>
+            <button className="inline-block mb-3 rounded-sm bg-gradient-to-r from-blue-500 to-purple-500 px-8 py-2.5 text-base font-semibold text-white shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:from-blue-600 hover:to-purple-600 focus:outline-none focus:ring-4 focus:ring-blue-300 active:scale-95" onClick={themChucDanh}>Thêm mới</button>
+            <table className="min-w-full bg-white border border-gray-200 rounded-lg overflow-hidden">
+                <thead className="bg-gray-200 text-gray-600">
+                    <tr className="text-center">
+                        <th className="py-2 px-4 border-b">Id</th>
+                        <th className="py-2 px-4 border-b">Tên chức danh</th>
+                        <th className="py-2 px-4 border-b">Mô tả</th>
+                        <th className="py-2 px-4 border-b">Người tạo</th>
+                        <th className="py-2 px-4 border-b">Ngày tạo</th>
+                        <th className="py-2 px-4 border-b">Người cập nhật</th>
+                        <th className="py-2 px-4 border-b">Ngày cập nhật</th>
+                        <th className="py-2 px-4 border-b">Trạng thái</th>
+                        <th className="py-2 px-4 border-b">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {chucDanhs.map(chucDanh => (
                         <tr key={chucDanh.id}>
-                            <td className='text-center'>{chucDanh.id}</td>
-                            <td>{chucDanh.tenChucDanh}</td>
-                            <td>{chucDanh.moTa}</td>
-                            <td>{chucDanh.nguoiTaoHoTen}</td>
-                            <td className='text-center'>{format(new Date(chucDanh.ngayTao), 'dd-MM-yyyy')}</td>
-                            <td>{chucDanh.nguoiCapNhatHoTen}</td>
-                            <td className='text-center'>{format(new Date(chucDanh.ngayCapNhat), 'dd-MM-yyyy')}</td>
-                            <td>{chucDanh.isActive ? "Áp dụng" : "Ngưng áp dụng"}</td>
-                            <td className='d-flex justify-content-center'>
-                                    <Link to={`/sua-chucdanh/${chucDanh.id}`} className='btn btn-warning btn-sm'>Sửa</Link>
-                                    <button
-                                        onClick={() => handleDelete(chucDanh.id)}
-                                        className='btn btn-danger btn-sm ms-2'
-                                    >
-                                        Xóa
-                                    </button>
-                                </td>
-                        </tr>)
-                }
-            </tbody>
-        </table>
-    </div>
-  )
-}
+                            <td className="text-center py-2 px-4 border-b">{chucDanh.id}</td>
+                            <td className="py-2 px-4 border-b">{chucDanh.tenChucDanh}</td>
+                            <td className="py-2 px-4 border-b">{chucDanh.moTa}</td>
+                            <td className="py-2 px-4 border-b">{chucDanh.nguoiTaoHoTen}</td>
+                            <td className="text-center py-2 px-4 border-b">{format(new Date(chucDanh.ngayTao), 'dd-MM-yyyy')}</td>
+                            <td className="py-2 px-4 border-b">{chucDanh.nguoiCapNhatHoTen}</td>
+                            <td className="text-center py-2 px-4 border-b">{format(new Date(chucDanh.ngayCapNhat), 'dd-MM-yyyy')}</td>
+                            <td className="py-2 px-4 border-b">{chucDanh.isActive ? "Áp dụng" : "Ngưng áp dụng"}</td>
+                            <td className="flex justify-center py-2 px-4 border-b">
+                                <Link to={`/sua-chuc-danh/${chucDanh.id}`} className="btn bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2">Sửa</Link>
+                                <button
+                                    onClick={() => handleDelete(chucDanh.id)}
+                                    className="btn bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded"
+                                >
+                                    Xóa
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+};
 
-export default ChucDanhListComponent
+export default ChucDanhListComponent;

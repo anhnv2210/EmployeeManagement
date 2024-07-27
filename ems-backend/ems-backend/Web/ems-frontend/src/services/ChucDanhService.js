@@ -14,7 +14,6 @@ export const checkTenChucDanhExists = async (tenChucDanh) => {
     }
 };
 
-// Các hàm khác như addChucDanh, updateChucDanh, getChucDanhById...
 export const addChucDanh = async (chucDanh) => {
     try {
         const response = await axios.post(REST_API_BASE_URL, chucDanh);

@@ -23,11 +23,12 @@ const HeaderComponent = () => {
                                 </button>
                                 {showDanhMuc && (
                                     <ul className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2">
-                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="/chucdanh">Chức danh</a></li>
-                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Phòng ban</a></li>
-                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Loại hợp đồng</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="/chuc-danh">Chức danh</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="/phong-ban">Phòng ban</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="/loai-hop-dong">Loại hợp đồng</a></li>
                                         <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Ngân hàng</a></li>
                                         <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Chi nhánh ngân hàng</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="/tai-san">Tài sản cấp phát</a></li>
                                         <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Nơi khám bệnh</a></li>
                                         <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Tỉnh thành</a></li>
                                         <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Quận huyện</a></li>
@@ -43,11 +44,11 @@ const HeaderComponent = () => {
                                 </button>
                                 {showNghiepVu && (
                                     <ul className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2">
-                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="/chucdanh">Hồ sơ nhân viên</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Hồ sơ nhân viên</a></li>
                                         <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Thông tin các quá trình trong HSNV</a></li>
                                         <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Thông tin công tác – lương</a></li>
-                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Phụ cấp</a></li>
-                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Phúc lợi</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="/phu-cap">Phụ cấp</a></li>
+                                        <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="/phuc-loi">Phúc lợi</a></li>
                                         <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Hợp đồng lao động</a></li>
                                         <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Cấp phát tài sản</a></li>
                                         <li><a className="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Kỷ luật</a></li>
@@ -58,7 +59,7 @@ const HeaderComponent = () => {
                                 )}
                             </li>
                             <li>
-                                <a className="block py-2 text-gray-700 hover:text-gray-900" href="#" tabIndex="-1" aria-disabled="true">Báo cáo</a>
+                                <a className="block py-2 text-gray-700 hover:text-gray-900" href="#" tabIndex="-1" aria-disabled="true">About</a>
                             </li>
                         </ul>
                         <form className="mt-4 lg:mt-0 lg:ml-8 relative">

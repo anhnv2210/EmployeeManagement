@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getChucDanhById, updateChucDanh } from '../../services/ChucDanhService';
-import { listNhanVien } from '../../services/NhanVienService';
+import { listNhanVien } from '@/services/NhanVienService';
+import { getPhuCapById, updatePhuCap } from '@/services/PhuCapService';
 import { formatISO } from 'date-fns';
+import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 
-const SuaChucDanhComponent = () => {
+const SuaPhuCapComponent = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [chucDanh, setChucDanh] = useState({
-        tenChucDanh: '',
+    const [phuCap, setPhuCap] = useState({
+        tenPhuCap: '',
         moTa: '',
         nguoiTaoId: '',
         nguoiCapNhatId: '',
@@ -17,8 +17,8 @@ const SuaChucDanhComponent = () => {
     const [nhanViens, setNhanViens] = useState([]);
 
     useEffect(() => {
-        getChucDanhById(id).then(response => {
-            setChucDanh(response.data);
+        getPhuCapById(id).then(response => {
+            setPhuCap(response.data);
         }).catch(error => {
             console.error(error);
         });
@@ -32,8 +32,8 @@ const SuaChucDanhComponent = () => {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setChucDanh({
-            ...chucDanh,
+        setPhuCap({
+            ...phuCap,
             [name]: type === 'checkbox' ? checked : value
         });
     }
@@ -41,30 +41,30 @@ const SuaChucDanhComponent = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
     
-        const updatedChucDanh = {
-            ...chucDanh,
+        const updatedPhuCap = {
+            ...phuCap,
             ngayCapNhat: formatISO(new Date()) 
         };
     
-        updateChucDanh(id, updatedChucDanh).then(() => {
-            navigate('/chuc-danh');
+        updatePhuCap(id, updatedPhuCap).then(() => {
+            navigate('/phu-cap');
         }).catch(error => {
-            console.error("Error updating ChucDanh:", error.response ? error.response.data : error.message);
+            console.error("Error updating PhuCap:", error.response ? error.response.data : error.message);
         });
     }
 
     return (
         <div className="container mx-auto mt-5">
             <div className="card p-4 mt-4 mb-3 w-1/2 mx-auto shadow-lg rounded-lg">
-                <h2 className="text-2xl font-bold text-center mb-4">Sửa chức danh</h2>
+                <h2 className="text-3xl font-bold text-center mb-4">Sửa Phụ Cấp</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Tên chức danh</label>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">Tên phụ cấp</label>
                         <input
                             type="text"
                             className="form-input w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
-                            name="tenChucDanh"
-                            value={chucDanh.tenChucDanh}
+                            name="tenPhuCap"
+                            value={phuCap.tenPhuCap}
                             onChange={handleChange}
                             disabled
                         />
@@ -74,7 +74,7 @@ const SuaChucDanhComponent = () => {
                         <textarea
                             className="form-textarea w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
                             name="moTa"
-                            value={chucDanh.moTa}
+                            value={phuCap.moTa}
                             onChange={handleChange}
                         ></textarea>
                     </div>
@@ -83,7 +83,7 @@ const SuaChucDanhComponent = () => {
                         <select
                             className="form-select w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
                             name="nguoiTaoId"
-                            value={chucDanh.nguoiTaoId}
+                            value={phuCap.nguoiTaoId}
                             onChange={handleChange}
                             disabled
                         >
@@ -97,7 +97,7 @@ const SuaChucDanhComponent = () => {
                         <select
                             className="form-select w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
                             name="nguoiCapNhatId"
-                            value={chucDanh.nguoiCapNhatId}
+                            value={phuCap.nguoiCapNhatId}
                             onChange={handleChange}
                             required
                         >
@@ -112,14 +112,14 @@ const SuaChucDanhComponent = () => {
                             type="checkbox"
                             className="form-checkbox text-blue-500"
                             name="isActive"
-                            checked={chucDanh.isActive}
+                            checked={phuCap.isActive}
                             onChange={handleChange}
                         />
                         <label className="ml-2 text-gray-700 text-sm">Áp dụng</label>
                     </div>
                     <div className="flex justify-between">
                     <button type="submit" className="btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Cập nhật</button>
-                    <button type="button" className="btn bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => navigate('/chuc-danh')}>Hủy</button>
+                    <button type="button" className="btn bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => navigate('/phu-cap')}>Hủy</button>
                     </div>
                 </form>
             </div>
@@ -127,4 +127,4 @@ const SuaChucDanhComponent = () => {
     );
 }
 
-export default SuaChucDanhComponent;
+export default SuaPhuCapComponent

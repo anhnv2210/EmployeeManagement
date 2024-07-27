@@ -1,9 +1,6 @@
-﻿using ems_backend.Models.RequestModel.QuocGiaRequest;
-using ems_backend.Models.RequestModel.TinhThanhRequest;
-using ems_backend.Models.ResponseModels.DataQuocGia;
+﻿using ems_backend.Models.RequestModel.TinhThanhRequest;
 using ems_backend.Models.ResponseModels.DataTinhThanh;
 using ems_backend.Service.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ems_backend.Controllers
@@ -25,12 +22,12 @@ namespace ems_backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<DataResponseTinhThanh>> GetTinhThanh(int id)
         {
-            var quocGia = await _service.LayTinhThanhTheoId(id);
-            if (quocGia == null)
+            var tinhThanh = await _service.LayTinhThanhTheoId(id);
+            if (tinhThanh == null)
             {
                 return NotFound();
             }
-            return Ok(quocGia);
+            return Ok(tinhThanh);
         }
         [HttpPost]
         public async Task<IActionResult> ThemTinhThanh([FromBody] Request_ThemTinhThanh request)
