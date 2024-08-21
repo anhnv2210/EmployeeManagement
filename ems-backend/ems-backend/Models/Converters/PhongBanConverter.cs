@@ -12,6 +12,8 @@ namespace ems_backend.Models.Converters
                 Id = phongBan.Id,
                 TenPhongBan = phongBan.TenPhongBan,
                 MoTa = phongBan.MoTa,
+                NguoiTaoId = phongBan.NguoiTaoId,
+                NguoiCapNhatId = phongBan.NguoiCapNhatId,
                 NguoiTaoHoTen = phongBan.NguoiTao?.Hoten,
                 NgayTao = (DateTime) phongBan.NgayTao,
                 NguoiCapNhatHoTen = phongBan.NguoiCapNhat?.Hoten,

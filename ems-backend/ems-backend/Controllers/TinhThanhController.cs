@@ -1,5 +1,7 @@
-﻿using ems_backend.Models.RequestModel.TinhThanhRequest;
+﻿using ems_backend.Models.Entities;
+using ems_backend.Models.RequestModel.TinhThanhRequest;
 using ems_backend.Models.ResponseModels.DataTinhThanh;
+using ems_backend.Service.Implements;
 using ems_backend.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +17,15 @@ namespace ems_backend.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DataResponseTinhThanh>>> LayDanhSachTinhThanh()
+        public async Task<ActionResult<IEnumerable<DataResponseTinhThanh>>> LayDanhSachTinhThanh(int pageSize = 10, int pageNumber = 1)
         {
-            return Ok(await _service.LayTatCaTinhThanh());
+            return Ok(await _service.LayTatCaTinhThanh(pageSize, pageNumber));
+        }
+        [HttpGet("byQuocGia/{quocGiaId}")]
+        public async Task<ActionResult<IEnumerable<TinhThanh>>> GetTinhThanhByQuocGia(long quocGiaId)
+        {
+            var tinhThanhs = await _service.GetTinhThanhByQuocGiaAsync(quocGiaId);
+            return Ok(tinhThanhs);
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<DataResponseTinhThanh>> GetTinhThanh(int id)

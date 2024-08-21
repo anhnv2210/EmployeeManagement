@@ -1,4 +1,5 @@
 ﻿using ems_backend.Data.DataContext;
+using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.TinhThanhRequest;
@@ -21,23 +22,29 @@ namespace ems_backend.Service.Implements
             return await _context.TinhThanhs.AnyAsync(tt => tt.TenTinhThanh.ToLower() == tenTinhThanh.ToLower());
         }
 
-        public async Task<IEnumerable<DataResponseTinhThanh>> LayTatCaTinhThanh()
+        public async Task<IEnumerable<DataResponseTinhThanh>> GetTinhThanhByQuocGiaAsync(long quocGiaId)
         {
             var query = _context.TinhThanhs
                 .Include(tt => tt.QuocGia)
-                .Include(qg => qg.NguoiTao)
-                .Include(qg => qg.NguoiCapNhat)
+                .Where(tt => tt.QuocGiaId == quocGiaId) 
                 .AsQueryable();
             var result = query.Select(tt => TinhThanhConverter.EntityToDTO(tt));
+            return result;
+        }
+
+        public async Task<PageResult<DataResponseTinhThanh>> LayTatCaTinhThanh(int pageSize = 10, int pageNumber = 1)
+        {
+            var query = _context.TinhThanhs
+                .Include(tt => tt.QuocGia)
+                .AsQueryable();
+            var result = Pagination.GetPagedData(query.Select(x => TinhThanhConverter.EntityToDTO(x)), pageSize, pageNumber);
             return result;
         }
 
         public async Task<DataResponseTinhThanh> LayTinhThanhTheoId(int id)
         {
             var tinhThanh = await _context.TinhThanhs
-            .Include(tt => tt.QuocGia)
-            .Include(tt => tt.NguoiTao)
-            .Include(tt => tt.NguoiCapNhat).FirstOrDefaultAsync(tt => tt.Id == id);
+            .Include(tt => tt.QuocGia).FirstOrDefaultAsync(tt => tt.Id == id);
             return TinhThanhConverter.EntityToDTO(tinhThanh);
         }
 
@@ -51,9 +58,6 @@ namespace ems_backend.Service.Implements
 
             tinhThanh.TenTinhThanh = request.TenTinhThanh;
             tinhThanh.MoTa = request.MoTa;
-            tinhThanh.NguoiCapNhatId = request.NguoiCapNhatId;
-            tinhThanh.IsActive = request.IsActive;
-            tinhThanh.NgayCapNhat = DateTime.Now;
 
             await _context.SaveChangesAsync();
             return TinhThanhConverter.EntityToDTO(tinhThanh);
@@ -67,11 +71,6 @@ namespace ems_backend.Service.Implements
                 TenTinhThanh = request.TenTinhThanh,
                 QuocGiaId = request.QuocGiaId,
                 MoTa = request.MoTa,
-                NguoiTaoId = request.NguoiTaoId,
-                NguoiCapNhatId = request.NguoiCapNhatId,
-                NgayTao = DateTime.Now,
-                NgayCapNhat = DateTime.Now,
-                IsActive = request.IsActive
             };
 
             _context.TinhThanhs.Add(tinhThanh);
@@ -89,6 +88,11 @@ namespace ems_backend.Service.Implements
 
             try
             {
+                foreach (var nhanVien in _context.NhanViens)
+                {
+                    if (nhanVien.TinhThanhId == id)
+                        nhanVien.TinhThanhId = null;
+                }
                 _context.TinhThanhs.Remove(tinhThanh);
                 await _context.SaveChangesAsync();
                 return true;

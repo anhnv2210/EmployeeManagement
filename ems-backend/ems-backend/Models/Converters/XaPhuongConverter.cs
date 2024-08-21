@@ -15,11 +15,9 @@ namespace ems_backend.Models.Converters
                 TenQuanHuyen = xaPhuong.QuanHuyen?.TenQuanHuyen,
                 TenTinhThanh = xaPhuong.TinhThanh?.TenTinhThanh,
                 TenQuocGia = xaPhuong.QuocGia?.TenQuocGia,
-                TenNguoiTao = xaPhuong.NguoiTao?.Hoten,
-                TenNguoiCapNhat = xaPhuong.NguoiCapNhat?.Hoten,
-                NgayTao = (DateTime) xaPhuong.NgayTao,
-                NgayCapNhat = (DateTime)xaPhuong.NgayCapNhat,
-                IsActive = xaPhuong.IsActive,
+                QuocGiaId = xaPhuong.QuocGiaId,
+                TinhThanhId = xaPhuong.TinhThanhId,
+                QuanHuyenId = xaPhuong.QuanHuyenId,
             };
         }
     }

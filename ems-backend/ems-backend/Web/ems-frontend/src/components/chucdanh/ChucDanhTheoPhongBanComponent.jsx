@@ -23,9 +23,13 @@ const ChucDanhPhongBanComponent = () => {
     }, []);
 
     if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
 
-    // Tính toán rowspan cho tenPhongBan
+    if (error) 
+        return (
+            <div className="container mx-auto mt-5" style={{ minHeight: 'calc(100vh - 210px)' }}>
+                <div className='mt-20 text-center text-4xl font-bold'>{error}</div>
+            </div>);
+
     const rowspanMap = chucDanhPhongBans.reduce((acc, curr) => {
         acc[curr.tenPhongBan] = (acc[curr.tenPhongBan] || 0) + 1;
         return acc;
@@ -34,39 +38,41 @@ const ChucDanhPhongBanComponent = () => {
     let previousPhongBan = null;
 
     return (
-        <div className="container  mx-auto mt-8 min-h-screen">
-            <h2 className="ml-96 text-3xl mb-4">Chức Danh Theo Phòng Ban</h2>
-            <div className="overflow-x-auto">
-                <table className="ml-80 w-1/2 bg-white border-2 border-gray-200">
-                    <thead>
-                        <tr>
-                            <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Phòng Ban</th>
-                            <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Chức Danh</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {chucDanhPhongBans.map((cdpb, index) => {
-                            const isFirstOccurrence = previousPhongBan !== cdpb.tenPhongBan;
-                            previousPhongBan = cdpb.tenPhongBan;
+        <div className='bg-gray-100 pt-10'>
+            <div className="container mx-auto" style={{ minHeight: 'calc(100vh - 190px)' }}>
+                <h2 className="ml-96 text-3xl mb-4">Chức Danh Theo Phòng Ban</h2>
+                <div className="overflow-x-auto">
+                    <table className="ml-80 w-1/2 bg-white border-2 border-gray-200">
+                        <thead>
+                            <tr>
+                                <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Phòng Ban</th>
+                                <th className="px-6 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Chức Danh</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {chucDanhPhongBans.map((cdpb, index) => {
+                                const isFirstOccurrence = previousPhongBan !== cdpb.tenPhongBan;
+                                previousPhongBan = cdpb.tenPhongBan;
 
-                            return (
-                                <tr key={index}>
-                                    {isFirstOccurrence && (
-                                        <td
-                                            className="px-6 py-4 border-b border-gray-200 bg-white text-sm"
-                                            rowSpan={rowspanMap[cdpb.tenPhongBan]}
-                                        >
-                                            {cdpb.tenPhongBan}
+                                return (
+                                    <tr key={index}>
+                                        {isFirstOccurrence && (
+                                            <td
+                                                className="px-6 py-4 border-b border-gray-200 bg-white text-sm"
+                                                rowSpan={rowspanMap[cdpb.tenPhongBan]}
+                                            >
+                                                {cdpb.tenPhongBan}
+                                            </td>
+                                        )}
+                                        <td className="px-6 py-4 border-l-2 border-b border-gray-200 bg-white text-sm">
+                                            {cdpb.tenChucDanh}
                                         </td>
-                                    )}
-                                    <td className="px-6 py-4 border-b border-gray-200 bg-white text-sm">
-                                        {cdpb.tenChucDanh}
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );

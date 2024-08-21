@@ -16,9 +16,9 @@ namespace ems_backend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DataResponsePhongBan>>> LayDanhSachPhongBan()
+        public async Task<IActionResult> LayDanhSachPhongBan(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
-            return Ok(await _service.LayTatCaPhongBan());
+            return Ok(await _service.LayTatCaPhongBan(isActive,pageSize,pageNumber));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<DataResponsePhongBan>> GetPhongBan(int id)

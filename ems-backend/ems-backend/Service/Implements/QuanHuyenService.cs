@@ -1,4 +1,5 @@
 ﻿using ems_backend.Data.DataContext;
+using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.QuanHuyenRequest;
@@ -21,18 +22,25 @@ namespace ems_backend.Service.Implements
             var quanHuyen = await _context.QuanHuyens
             .Include(qh => qh.QuocGia)
             .Include(qh => qh.TinhThanh)
-            .Include(qh => qh.NguoiTao)
-            .Include(qh => qh.NguoiCapNhat).FirstOrDefaultAsync(qh => qh.Id == id);
+            .FirstOrDefaultAsync(qh => qh.Id == id);
             return QuanHuyenConverter.EntityToDTO(quanHuyen);
         }
 
-        public async Task<IEnumerable<DataResponseQuanHuyen>> LayTatCaQuanHuyen()
+        public async Task<PageResult<DataResponseQuanHuyen>> LayTatCaQuanHuyen(int pageSize = 10, int pageNumber = 1)
         {
             var query = _context.QuanHuyens
                 .Include(qh => qh.QuocGia)
                 .Include(qh => qh.TinhThanh)
-                .Include(qh => qh.NguoiTao)
-                .Include(qh => qh.NguoiCapNhat)
+                .AsQueryable();
+            var result = Pagination.GetPagedData(query.Select(x => QuanHuyenConverter.EntityToDTO(x)), pageSize, pageNumber);
+            return result;
+        }
+
+        public async Task<IEnumerable<DataResponseQuanHuyen>> LayTatCaQuanHuyenByTinhThanh(int tinhThanhId)
+        {
+            var query = _context.QuanHuyens
+                .Include(qh => qh.QuocGia)
+                .Include(qh => qh.TinhThanh).Where(qh => qh.TinhThanhId == tinhThanhId)
                 .AsQueryable();
             var result = query.Select(qh => QuanHuyenConverter.EntityToDTO(qh));
             return result;
@@ -47,10 +55,9 @@ namespace ems_backend.Service.Implements
             }
 
             quanHuyen.TenQuanHuyen = request.TenQuanHuyen;
+            quanHuyen.QuocGiaId = request.QuocGiaId;
+            quanHuyen.TinhThanhId =  request.TinhThanhId;
             quanHuyen.MoTa = request.MoTa;
-            quanHuyen.NguoiCapNhatId = request.NguoiCapNhatId;
-            quanHuyen.IsActive = request.IsActive;
-            quanHuyen.NgayCapNhat = DateTime.Now;
 
             await _context.SaveChangesAsync();
             return QuanHuyenConverter.EntityToDTO(quanHuyen);
@@ -64,11 +71,6 @@ namespace ems_backend.Service.Implements
                 QuocGiaId = request.QuocGiaId,
                 TinhThanhId = request.TinhThanhId,
                 MoTa = request.MoTa,
-                NguoiTaoId = request.NguoiTaoId,
-                NguoiCapNhatId = request.NguoiCapNhatId,
-                NgayTao = DateTime.Now,
-                NgayCapNhat = DateTime.Now,
-                IsActive = request.IsActive
             };
 
             _context.QuanHuyens.Add(quanHuyen);
@@ -86,6 +88,11 @@ namespace ems_backend.Service.Implements
 
             try
             {
+                foreach (var nhanVien in _context.NhanViens)
+                {
+                    if (nhanVien.QuanHuyenId == id)
+                        nhanVien.QuanHuyenId = null;
+                }
                 _context.QuanHuyens.Remove(quanHuyen);
                 await _context.SaveChangesAsync();
                 return true;

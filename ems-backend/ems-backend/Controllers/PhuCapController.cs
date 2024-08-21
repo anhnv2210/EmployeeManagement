@@ -1,9 +1,6 @@
-﻿using ems_backend.Models.RequestModel.PhongBanRequest;
-using ems_backend.Models.RequestModel.PhuCapRequest;
-using ems_backend.Models.ResponseModels.DataPhongBan;
+﻿using ems_backend.Models.RequestModel.PhuCapRequest;
 using ems_backend.Models.ResponseModels.ResponsePhuCap;
 using ems_backend.Service.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ems_backend.Controllers
@@ -18,9 +15,9 @@ namespace ems_backend.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DataResponsePhuCap>>> LayDanhSachPhuCap()
+        public async Task<IActionResult> LayDanhSachPhuCap(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
-            return Ok(await _service.LayTatCaPhuCap());
+            return Ok(await _service.LayTatCaPhuCap(isActive, pageSize, pageNumber));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<DataResponsePhuCap>> GetPhuCap(int id)

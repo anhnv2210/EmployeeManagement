@@ -2,7 +2,15 @@ import axios from "axios"
 
 const REST_API_BASE_URL = 'https://localhost:7178/api/phongban';
 
-export const listPhongBan = () => axios.get(REST_API_BASE_URL);
+export const listPhongBan = (statusFilter = '', pageSize = 10, pageNumber = 1) => {
+    const params = {
+        pageSize,
+        pageNumber,
+        ...(statusFilter && { isActive: statusFilter === 'True' })
+    };
+
+    return axios.get(REST_API_BASE_URL, { params });
+};
 
 export const checkTenPhongBanExists = async (tenPhongBan) => {
     try {

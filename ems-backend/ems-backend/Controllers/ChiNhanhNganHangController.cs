@@ -1,4 +1,5 @@
-﻿using ems_backend.Models.RequestModel.ChiNhanhNganHang;
+﻿using ems_backend.Models.Entities;
+using ems_backend.Models.RequestModel.ChiNhanhNganHang;
 using ems_backend.Models.RequestModel.NganHangRequest;
 using ems_backend.Models.ResponseModels.DataChiNhanhNganHang;
 using ems_backend.Models.ResponseModels.DataNganHang;
@@ -18,9 +19,15 @@ namespace ems_backend.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DataResponseChiNhanhNganHang>>> LayDanhSachNganHang()
+        public async Task<ActionResult<IEnumerable<DataResponseChiNhanhNganHang>>> LayDanhSachChiNhanhNganHang(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
-            return Ok(await _service.LayTatCaChiNhanhNganHang());
+            return Ok(await _service.LayTatCaChiNhanhNganHang(isActive, pageSize, pageNumber));
+        }
+        [HttpGet("byNganHang/{nganHangId}")]
+        public async Task<ActionResult<IEnumerable<QuanHuyen>>> GetChiNhanhNganHangByNganHang(int nganHangId)
+        {
+            var result = await _service.LayTatCaChiNhanhNganHangByNganHang(nganHangId);
+            return Ok(result);
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<DataResponseChiNhanhNganHang>> GetChiNhanhNganHang(int id)
@@ -38,11 +45,6 @@ namespace ems_backend.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-            var existsTen = await _service.CheckTenChiNhanhNganHangExists(request.TenChiNhanhNganHang, request.NganHangId);
-            if (existsTen)
-            {
-                return Conflict($"Tên chi nhánh ngân hàng của {request.NganHangId} đã tồn tại.");
             }
             var existsEmail = await _service.CheckEmailExists(request.Email);
             if (existsEmail)
@@ -91,12 +93,6 @@ namespace ems_backend.Controllers
             }
 
             return NotFound();
-        }
-        [HttpGet("check-tenchinhanh-nganhang")]
-        public async Task<IActionResult> CheckTenNganHangCungNganHang([FromQuery] string tenNganHang, [FromQuery] int nganHangId)
-        {
-            var exists = await _service.CheckTenChiNhanhNganHangExists(tenNganHang,nganHangId);
-            return Ok(new { exists });
         }
         [HttpGet("check-email")]
         public async Task<IActionResult> CheckEmail([FromQuery] string email)

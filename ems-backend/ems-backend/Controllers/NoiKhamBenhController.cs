@@ -1,9 +1,6 @@
-﻿using ems_backend.Models.RequestModel.NganHangRequest;
-using ems_backend.Models.RequestModel.NoiKhamBenhRequest;
-using ems_backend.Models.ResponseModels.DataNganHang;
+﻿using ems_backend.Models.RequestModel.NoiKhamBenhRequest;
 using ems_backend.Models.ResponseModels.DataNoiKhamBenh;
 using ems_backend.Service.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ems_backend.Controllers
@@ -18,9 +15,9 @@ namespace ems_backend.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DataResponseNoiKhamBenh>>> LayDanhSachNoiKhamBenh()
+        public async Task<IActionResult> LayDanhSachNoiKhamBenh(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
-            return Ok(await _service.LayTatCaNoiKhamBenh());
+            return Ok(await _service.LayTatCaNoiKhamBenh(isActive, pageSize, pageNumber));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<DataResponseNoiKhamBenh>> GetNoiKhamBenh(int id)

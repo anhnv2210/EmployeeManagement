@@ -1,10 +1,12 @@
 ﻿using ems_backend.Data.DataContext;
+using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.ChucDanhRequest;
 using ems_backend.Models.ResponseModels.DataChucDanh;
 using ems_backend.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace ems_backend.Service.Implements
 {
@@ -28,13 +30,18 @@ namespace ems_backend.Service.Implements
             return ChucDanhConverter.EntityToDTO(chucDanh);
         }
 
-        public async Task<IEnumerable<DataResponseChucDanh>> LayTatCaChucDanh()
+        public async Task<PageResult<DataResponseChucDanh>> LayTatCaChucDanh(bool? isActive, int pageSize, int pageNumber)
         {
             var query = _context.ChucDanhs
                 .Include(x => x.NguoiTao)
                 .Include(x => x.NguoiCapNhat)
                 .AsQueryable();
-            var result = query.Select(x =>ChucDanhConverter.EntityToDTO(x));
+            if(isActive.HasValue)
+            {
+                query = query.Where(cd => cd.IsActive == isActive.Value);
+            }
+            var result = Pagination.GetPagedData(query.Select(x => ChucDanhConverter.EntityToDTO(x)), pageSize, pageNumber);
+            
             return result;
         }
 
@@ -84,6 +91,11 @@ namespace ems_backend.Service.Implements
 
             try
             {
+                foreach (var nhanVien in _context.NhanViens)
+                {
+                    if (nhanVien.ChucDanhId == id)
+                        nhanVien.ChucDanhId = null;
+                }
                 _context.ChucDanhs.Remove(chucDanh);
                 await _context.SaveChangesAsync();
                 return true;

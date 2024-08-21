@@ -1,4 +1,5 @@
 ﻿using ems_backend.Data.DataContext;
+using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.QuocGiaRequest;
@@ -24,18 +25,15 @@ namespace ems_backend.Service.Implements
         public async Task<DataResponseQuocGia> LayQuocGiaTheoId(int id)
         {
             var quocGia = await _context.QuocGias
-            .Include(qg => qg.NguoiTao)
-            .Include(qg => qg.NguoiCapNhat).FirstOrDefaultAsync(qg => qg.Id == id);
+            .FirstOrDefaultAsync(qg => qg.Id == id);
             return QuocGiaConverter.EntityToDTO(quocGia);
         }
 
-        public async Task<IEnumerable<DataResponseQuocGia>> LayTatCaQuocGia()
+        public async Task<PageResult<DataResponseQuocGia>> LayTatCaQuocGia(int pageSize = 10, int pageNumber = 1)
         {
             var query = _context.QuocGias
-                .Include(qg => qg.NguoiTao)
-                .Include(qg => qg.NguoiCapNhat)
                 .AsQueryable();
-            var result = query.Select(qg => QuocGiaConverter.EntityToDTO(qg));
+            var result = Pagination.GetPagedData(query.Select(x => QuocGiaConverter.EntityToDTO(x)), pageSize, pageNumber);
             return result;
         }
 
@@ -49,9 +47,6 @@ namespace ems_backend.Service.Implements
 
             quocGia.TenQuocGia = request.TenQuocGia;
             quocGia.MoTa = request.MoTa;
-            quocGia.NguoiCapNhatId = request.NguoiCapNhatId;
-            quocGia.IsActive = request.IsActive;
-            quocGia.NgayCapNhat = DateTime.Now;
 
             await _context.SaveChangesAsync();
             return QuocGiaConverter.EntityToDTO(quocGia);
@@ -63,11 +58,6 @@ namespace ems_backend.Service.Implements
             {
                 TenQuocGia = request.TenQuocGia,
                 MoTa = request.MoTa,
-                NguoiTaoId = request.NguoiTaoId,
-                NguoiCapNhatId = request.NguoiCapNhatId,
-                NgayTao = DateTime.Now,
-                NgayCapNhat = DateTime.Now,
-                IsActive = request.IsActive
             };
 
             _context.QuocGias.Add(quocGia);
@@ -85,6 +75,11 @@ namespace ems_backend.Service.Implements
 
             try
             {
+                foreach (var nhanVien in _context.NhanViens)
+                {
+                    if (nhanVien.QuocGiaId == id)
+                        nhanVien.QuocGiaId = null;
+                }
                 _context.QuocGias.Remove(quocGia);
                 await _context.SaveChangesAsync();
                 return true;

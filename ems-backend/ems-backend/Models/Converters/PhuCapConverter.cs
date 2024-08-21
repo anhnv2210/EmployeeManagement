@@ -12,6 +12,8 @@ namespace ems_backend.Models.Converters
                 Id = phuCap.Id,
                 TenPhuCap = phuCap.TenPhuCap,
                 MoTa = phuCap.MoTa,
+                NguoiTaoId = phuCap.NguoiTaoId,
+                NguoiCapNhatId = phuCap.NguoiCapNhatId,
                 NguoiTaoHoTen = phuCap.NguoiTao?.Hoten,
                 NgayTao = (DateTime)phuCap.NgayTao,
                 NguoiCapNhatHoTen = phuCap.NguoiCapNhat?.Hoten,

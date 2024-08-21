@@ -1,9 +1,7 @@
 ﻿
 using ems_backend.Models.RequestModel.TaiSanRequest;
-using ems_backend.Models.ResponseModels.DataPhucLoi;
 using ems_backend.Models.ResponseModels.DataTaiSan;
 using ems_backend.Service.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ems_backend.Controllers
@@ -19,19 +17,19 @@ namespace ems_backend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DataResponsePhucLoi>>> LayDanhSachTaiSan()
+        public async Task<ActionResult<IEnumerable<DataResponseTaiSan>>> LayDanhSachTaiSan(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
-            return Ok(await _service.LayTatCaTaiSan());
+            return Ok(await _service.LayTatCaTaiSan(isActive, pageSize, pageNumber));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<DataResponseTaiSan>> GetTaiSan(int id)
         {
-            var phucLoi = await _service.LayTaiSanTheoId(id);
-            if (phucLoi == null)
+            var taiSan = await _service.LayTaiSanTheoId(id);
+            if (taiSan == null)
             {
                 return NotFound();
             }
-            return Ok(phucLoi);
+            return Ok(taiSan);
         }
         [HttpPost]
         public async Task<IActionResult> ThemTaiSan([FromBody] Request_ThemTaiSan request)

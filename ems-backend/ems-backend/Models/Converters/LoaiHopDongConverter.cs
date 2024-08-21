@@ -12,6 +12,8 @@ namespace ems_backend.Models.Converters
                 Id = loaiHopDong.Id,
                 TenLoaiHopDong = loaiHopDong.TenLoaiHopDong,
                 MoTa = loaiHopDong.MoTa,
+                NguoiTaoId = loaiHopDong.NguoiTaoId,
+                NguoiCapNhatId = loaiHopDong.NguoiCapNhatId,
                 NguoiTaoHoTen = loaiHopDong.NguoiTao?.Hoten,
                 NgayTao = (DateTime)loaiHopDong.NgayTao,
                 NguoiCapNhatHoTen = loaiHopDong.NguoiCapNhat?.Hoten,

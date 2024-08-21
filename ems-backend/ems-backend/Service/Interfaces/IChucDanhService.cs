@@ -6,7 +6,7 @@ namespace ems_backend.Service.Interfaces
 {
     public interface IChucDanhService
     {
-        Task<IEnumerable<DataResponseChucDanh>> LayTatCaChucDanh();
+        Task<PageResult<DataResponseChucDanh>> LayTatCaChucDanh(bool? isActive, int pageSize, int pageNumber);
         Task<DataResponseChucDanh> LayChucDanhTheoId(int id);
         Task<DataResponseChucDanh> ThemChucDanh(Request_ThemChucDanh request);
         Task<DataResponseChucDanh> SuaChucDanh(int id,Request_SuaChucDanh request);

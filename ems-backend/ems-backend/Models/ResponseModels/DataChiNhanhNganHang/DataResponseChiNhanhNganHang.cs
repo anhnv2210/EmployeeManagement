@@ -7,8 +7,11 @@
         public string Email { get; set; }
         public string SoDienThoai { get; set; }
         public string MoTa { get; set; }
+        public int NguoiTaoId {  get; set; }
         public string NguoiTaoHoTen { get; set; }
+        public int NguoiCapNhatId {  get; set; }
         public string NguoiCapNhatHoTen { get; set; }
+        public int NganHangId {  get; set; }
         public string NganHangTen { get; set; }
         public DateTime NgayTao { get; set; }
         public DateTime NgayCapNhat { get; set; }

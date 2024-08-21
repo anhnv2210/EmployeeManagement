@@ -1,4 +1,5 @@
 ﻿using ems_backend.Data.DataContext;
+using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.PhucLoiRequest;
@@ -29,13 +30,18 @@ namespace ems_backend.Service.Implements
             return PhucLoiConverter.EntityToDTO(phucLoi);
         }
 
-        public async Task<IEnumerable<DataResponsePhucLoi>> LayTatCaPhucLoi()
+        public async Task<PageResult<DataResponsePhucLoi>> LayTatCaPhucLoi(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
             var query = _context.PhucLois
                  .Include(pl => pl.NguoiTao)
                  .Include(pl => pl.NguoiCapNhat)
                  .AsQueryable();
-            var result = query.Select(pl => PhucLoiConverter.EntityToDTO(pl));
+            if (isActive.HasValue)
+            {
+                query = query.Where(pl => pl.IsActive == isActive.Value);
+            }
+            var result = Pagination.GetPagedData(query.Select(x => PhucLoiConverter .EntityToDTO(x)), pageSize, pageNumber);
+
             return result;
         }
 

@@ -11,12 +11,9 @@ namespace ems_backend.Models.Converters
             {
                 Id = tinhThanh.Id,
                 TenTinhThanh = tinhThanh.TenTinhThanh,
+                QuocGiaId = tinhThanh.QuocGiaId,
                 TenQuocGia = tinhThanh.QuocGia?.TenQuocGia,
-                TenNguoiTao = tinhThanh.NguoiTao?.Hoten,
-                NgayTao = (DateTime)tinhThanh.NgayTao,
-                TenNguoiCapNhat = tinhThanh.NguoiCapNhat?.Hoten,
-                NgayCapNhat = (DateTime)tinhThanh.NgayCapNhat,
-                IsActive = tinhThanh.IsActive,
+                MoTa = tinhThanh.MoTa
             };
         }
     }

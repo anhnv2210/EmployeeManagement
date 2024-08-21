@@ -1,5 +1,6 @@
 ﻿using ems_backend.Common.HandleExceptions;
 using ems_backend.Data.DataContext;
+using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.NoiKhamBenhRequest;
@@ -45,13 +46,17 @@ namespace ems_backend.Service.Implements
         }
     
 
-        public async Task<IEnumerable<DataResponseNoiKhamBenh>> LayTatCaNoiKhamBenh()
+        public async Task<PageResult<DataResponseNoiKhamBenh>> LayTatCaNoiKhamBenh(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
             var query = _context.NoiKhamBenhs
                   .Include(nkb => nkb.NguoiTao)
                   .Include(nkb => nkb.NguoiCapNhat)
                   .AsQueryable();
-            var result = query.Select(nkb => NoiKhamBenhConverter.EntityToDTO(nkb));
+            if (isActive.HasValue)
+            {
+                query = query.Where(nkb => nkb.IsActive == isActive.Value);
+            }
+            var result = Pagination.GetPagedData(query.Select(x => NoiKhamBenhConverter.EntityToDTO(x)), pageSize, pageNumber);
             return result;
         }
 
@@ -107,6 +112,11 @@ namespace ems_backend.Service.Implements
 
             try
             {
+                foreach (var nhanVien in _context.NhanViens)
+                {
+                    if (nhanVien.NoiKhamBenhId == id)
+                        nhanVien.NoiKhamBenhId = null;
+                }
                 _context.NoiKhamBenhs.Remove(noiKhamBenh);
                 await _context.SaveChangesAsync();
                 return true;

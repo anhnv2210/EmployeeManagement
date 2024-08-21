@@ -15,6 +15,8 @@ namespace ems_backend.Models.Converters
                 Email = nganHang.Email,
                 SDT = nganHang.SDT,
                 MoTa = nganHang.MoTa,
+                NguoiTaoId = nganHang.NguoiTaoId,
+                NguoiCapNhatId = nganHang.NguoiCapNhatId,
                 NguoiTaoHoTen = nganHang.NguoiTao?.Hoten,
                 NguoiCapNhatHoTen = nganHang.NguoiCapNhat?.Hoten,
                 NgayTao = (DateTime)nganHang.NgayTao,

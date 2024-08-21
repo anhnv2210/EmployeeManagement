@@ -1,9 +1,6 @@
-﻿using ems_backend.Models.RequestModel.ChucDanhRequest;
-using ems_backend.Models.RequestModel.DanhMucKhacRequest;
-using ems_backend.Models.ResponseModels.DataChucDanh;
+﻿using ems_backend.Models.RequestModel.DanhMucKhacRequest;
 using ems_backend.Models.ResponseModels.DataDanhMucKhac;
 using ems_backend.Service.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ems_backend.Controllers
@@ -18,9 +15,9 @@ namespace ems_backend.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DataResponseDanhMucKhac>>> LayDanhSachDanhMucKhac()
+        public async Task<IActionResult> LayDanhSachDanhMucKhac(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
-            return Ok(await _service.LayTatCaDanhMucKhac());
+            return Ok(await _service.LayTatCaDanhMucKhac(isActive, pageSize, pageNumber));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<DataResponseDanhMucKhac>> GetDanhMucKhac(int id)

@@ -1,4 +1,5 @@
 ﻿using ems_backend.Data.DataContext;
+using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.DanhMucKhacRequest;
@@ -24,13 +25,18 @@ namespace ems_backend.Service.Implements
             return DanhMucKhacConverter.EntityToDTO(danhMucKhac);
         }
 
-        public async Task<IEnumerable<DataResponseDanhMucKhac>> LayTatCaDanhMucKhac()
+        public async Task<PageResult<DataResponseDanhMucKhac>> LayTatCaDanhMucKhac(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
             var query = _context.DanhMucKhacs
                 .Include(dmk => dmk.NguoiTao)
                 .Include(dmk => dmk.NguoiCapNhat)
                 .AsQueryable();
-            var result = query.Select(dmk => DanhMucKhacConverter.EntityToDTO(dmk));
+            if (isActive.HasValue)
+            {
+                query = query.Where(dmk => dmk.IsActive == isActive.Value);
+            }
+            var result = Pagination.GetPagedData(query.Select(x => DanhMucKhacConverter.EntityToDTO(x)), pageSize, pageNumber);
+
             return result;
         }
 

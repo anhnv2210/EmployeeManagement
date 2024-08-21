@@ -2,7 +2,15 @@ import axios from "axios"
 
 const REST_API_BASE_URL = 'https://localhost:7178/api/phucloi';
 
-export const listPhucLoi = () => axios.get(REST_API_BASE_URL);
+export const listPhucLoi = (statusFilter = '', pageSize = 10, pageNumber = 1) => {
+    const params = {
+        pageSize,
+        pageNumber,
+        ...(statusFilter && { isActive: statusFilter === 'True' })
+    };
+
+    return axios.get(REST_API_BASE_URL, { params });
+};
 
 export const checkTenPhucLoiExists = async (tenPhucLoi) => {
     try {

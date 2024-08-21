@@ -12,6 +12,8 @@ namespace ems_backend.Models.Converters
                 Id = taiSan.Id,
                 TenTaiSan = taiSan.TenTaiSan,
                 MoTa = taiSan.MoTa,
+                NguoiTaoId = taiSan.NguoiTaoId,
+                NguoiCapNhatId = taiSan.NguoiCapNhatId,
                 NguoiTaoHoTen = taiSan.NguoiTao?.Hoten,
                 NguoiCapNhatHoTen = taiSan.NguoiCapNhat?.Hoten,
                 NgayTao = (DateTime)taiSan.NgayTao,

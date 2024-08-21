@@ -19,7 +19,7 @@ const ThemPhuCapComponent = () => {
     useEffect(() => {
         listNhanVien()
             .then(response => {
-                setNhanViens(response.data);
+                setNhanViens(response.data.data);
             })
             .catch(error => {
                 console.error('Có lỗi xảy ra khi gọi API:', error);
@@ -49,6 +49,14 @@ const ThemPhuCapComponent = () => {
             console.error("Error adding PhuCap:", error.response ? error.response.data : error.message);
             setError('Có lỗi xảy ra khi thêm phụ cấp.');
         }
+    };
+
+    const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
+    const handleFilterClick = (filter) => {
+        setStatusFilter(filter);
+        setCurrentPage(1);
+        setIsDropdownOpen(false);
     };
 
   return (

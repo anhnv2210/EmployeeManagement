@@ -7,10 +7,11 @@
         public bool GioiTinh { get; set; }
         public string SoDienThoai { get; set; }
         public string Email { get; set; }
+        public string AnhDaiDien { get; set; }
         public int? PhongBanId { get; set; }
         public virtual PhongBan? PhongBan { get; set; }
-        public int? ChucDanhPhongBanId { get; set; }
-        public virtual ChucDanhPhongBan? ChucDanhPhongBan { get; set; }
+        public int? ChucDanhId { get; set; }
+        public virtual ChucDanh? ChucDanh { get; set; }
         public int? XaPhuongId { get; set; }
         public virtual XaPhuong? XaPhuong { get; set; }
         public int? QuanHuyenId { get; set; }
@@ -31,6 +32,8 @@
         public DateTime? NgayCapNhat { get; set; }
         public NhanVien? NguoiTao { get; set; }
         public NhanVien? NguoiCapNhat { get; set; }
+        public DateTime? NgayBatDauLamViec {  get; set; }
+        public DateTime? NgayKetThucLamViec { get; set; }
         public string TrangThai { get; set; }
         public virtual ICollection<HopDong>? HopDongs { get; set; }
         public virtual ICollection<QuyetDinh>? QuyetDinhs { get; set; }
@@ -41,5 +44,6 @@
         public virtual ICollection<KhenThuong>? KhenThuongs { get; set; }
         public virtual ICollection<NghiViec>? NghiViecs { get; set; }
         public virtual ICollection<CapPhatTaiSan>? CapPhatTaiSans { get; set; }
+        public virtual ICollection<LichSuThayDoiThongTin> LichSuThayDoiThongTins { get; set; }  
     }
 }

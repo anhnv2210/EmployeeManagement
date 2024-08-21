@@ -12,6 +12,8 @@ namespace ems_backend.Models.Converters
                 Id = chucDanh.Id,
                 TenChucDanh = chucDanh.TenChucDanh,
                 MoTa = chucDanh.MoTa,
+                NguoiTaoId = chucDanh.NguoiTaoId,
+                NguoiCapNhatId = chucDanh.NguoiCapNhatId,
                 NguoiTaoHoTen = chucDanh.NguoiTao?.Hoten,
                 NguoiCapNhatHoTen = chucDanh.NguoiCapNhat?.Hoten,
                 NgayTao = chucDanh.NgayTao,

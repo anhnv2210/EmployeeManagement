@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
@@ -16,10 +15,19 @@ const HomeComponent = () => {
     const handleChucDanhPhongBanClick = () => {
         navigate('/chuc-danh-phong-ban');
     }
+
+    const handleReminderClick = () => {
+      navigate('/reminder');
+    }
+
+    const handleSoDoClick = () => {
+      navigate('/so-do');
+    }
+
   return (
       <div className='bg-gray-100'>
-        <div className='ml-40 mr-40 p-10'>
-          <div><img src='https://www.pace.edu.vn/uploads/news/2023/04/3-chuc-nang-cua-quan-tri-nhan-su.jpg'/></div>
+        <div className='ml-40 mr-40 pt-6 px-10'>
+          <div><img src='https://www.pace.edu.vn/uploads/news/2023/04/3-chuc-nang-cua-quan-tri-nhan-su.jpg' style={{ width: '100%' }}/></div>
           <div class="grid grid-cols-3 gap-3 mt-10">
           <div className="block rounded-lg bg-white p-8 mx-4 my-6 text-gray-800 shadow-md dark:bg-gray-800 dark:text-gray-200">
               <h5 className="mb-4 text-3xl font-bold leading-tight text-gray-900 dark:text-white">
@@ -56,7 +64,7 @@ const HomeComponent = () => {
               <p className="mb-6 text-base text-gray-700 dark:text-gray-300">
               Hiển thị cấu trúc quản lý và các phòng ban trong công ty.
               </p>
-              <button
+              <button onClick={handleSoDoClick}
                 type="button"
                 className="inline-block rounded-full bg-gradient-to-r from-blue-500 to-purple-500 px-8 py-2.5 text-sm font-semibold text-white shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:from-blue-600 hover:to-purple-600 focus:outline-none focus:ring-4 focus:ring-blue-300 active:scale-95">
                 Xem thêm
@@ -82,14 +90,14 @@ const HomeComponent = () => {
               <p className="mb-6 text-base text-gray-700 dark:text-gray-300">
                 Cho biết thời gian cần thiết để nhắc nhở trước một sự kiện quan trọng.
               </p>
-              <button
+              <button onClick={handleReminderClick}
                 type="button"
-                className="inline-block rounded-full mt-9 bg-gradient-to-r from-blue-500 to-purple-500 px-8 py-2.5 text-sm font-semibold text-white shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:from-blue-600 hover:to-purple-600 focus:outline-none focus:ring-4 focus:ring-blue-300 active:scale-95">
+                className="inline-block rounded-full mt-2 bg-gradient-to-r from-blue-500 to-purple-500 px-8 py-2.5 text-sm font-semibold text-white shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:from-blue-600 hover:to-purple-600 focus:outline-none focus:ring-4 focus:ring-blue-300 active:scale-95">
                 Xem thêm
               </button>
             </div>
 
-            <div className="block rounded-lg bg-white p-8 mx-4 my-6 text-gray-800 shadow-md dark:bg-gray-800 dark:text-gray-200">
+            {/* <div className="block rounded-lg bg-white p-8 mx-4 my-6 text-gray-800 shadow-md dark:bg-gray-800 dark:text-gray-200">
               <h5 className="mb-4 text-3xl font-bold leading-tight text-gray-900 dark:text-white">
                 Báo cáo
               </h5>
@@ -101,7 +109,7 @@ const HomeComponent = () => {
                 className="inline-block rounded-full mt-3 bg-gradient-to-r from-blue-500 to-purple-500 px-8 py-2.5 text-sm font-semibold text-white shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:from-blue-600 hover:to-purple-600 focus:outline-none focus:ring-4 focus:ring-blue-300 active:scale-95">
                 Xem thêm
               </button>
-            </div>
+            </div> */}
 
           </div>
         </div>

@@ -1,6 +1,7 @@
 ﻿using ems_backend.Common.DefaultConstants;
-using ems_backend.Common.Midlewares;    
+using ems_backend.Common.Midlewares;
 using ems_backend.Extensions;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,12 +25,17 @@ builder.Services.AddCors(options =>
                           .AllowAnyMethod());
 });
 
+//builder.Services.Configure<FormOptions>(options =>
+//{
+//    options.MultipartBodyLengthLimit = 104857600; // 100 MB
+//});
+
 var app = builder.Build();
 
-//// Đăng ký middleware
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+//app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-// Configure the HTTP request pipeline.
+app.UseStaticFiles();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

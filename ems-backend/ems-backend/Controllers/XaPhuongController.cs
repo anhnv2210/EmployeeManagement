@@ -1,4 +1,5 @@
-﻿using ems_backend.Models.RequestModel.XaPhuongRequest;
+﻿using ems_backend.Models.Entities;
+using ems_backend.Models.RequestModel.XaPhuongRequest;
 using ems_backend.Models.ResponseModels.DataXaPhuong;
 using ems_backend.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +16,15 @@ namespace ems_backend.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DataResponseXaPhuong>>> LayDanhSachXaPhuong()
+        public async Task<ActionResult<IEnumerable<DataResponseXaPhuong>>> LayDanhSachXaPhuong( int pageSize = 10, int pageNumber = 1)
         {
-            return Ok(await _service.LayTatCaXaPhuong());
+            return Ok(await _service.LayTatCaXaPhuong(pageSize, pageNumber));
+        }
+        [HttpGet("byQuanHuyen/{quanHuyenId}")]
+        public async Task<ActionResult<IEnumerable<QuanHuyen>>> GetXaPhuongByQuanHuyen(int quanHuyenId)
+        {
+            var quanHuyens = await _service.LayTatCaXaPhuongByQuanHuyen(quanHuyenId);
+            return Ok(quanHuyens);
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<DataResponseXaPhuong>> GetXaPhuong(int id)

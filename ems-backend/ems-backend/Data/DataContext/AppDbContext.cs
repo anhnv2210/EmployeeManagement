@@ -21,6 +21,7 @@ namespace ems_backend.Data.DataContext
         public DbSet<KhenThuong> KhenThuongs { get; set; }
         public DbSet<KyLuat> KyLuats { get; set; }
         public DbSet<LoaiHopDong> LoaiHopDongs { get; set; }
+        public DbSet<LichSuThayDoiThongTin> LichSuThayDoiThongTins { get; set; }
         public DbSet<NganHang> NganHangs { get; set; }
         public DbSet<NghiViec> NghiViecs { get; set; }
         public DbSet<NguoiThanNhanVien> NguoiThanNhanViens { get; set; }
@@ -35,6 +36,8 @@ namespace ems_backend.Data.DataContext
         public DbSet<TapTinDinhKem> TapTinDinhKems { get; set; }
         public DbSet<TinhThanh> TinhThanhs { get; set; }
         public DbSet<XaPhuong> XaPhuongs { get; set; }
+        public DbSet<Reminder> Reminders { get; set; }
+        public DbSet<ReminderSetting> ReminderSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -67,77 +70,45 @@ namespace ems_backend.Data.DataContext
                 .WithMany()
                 .HasForeignKey(c => c.NguoiCapNhatId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<ChiNhanhNganHang>()
                 .HasOne(c => c.NguoiTao)
                 .WithMany()
                 .HasForeignKey(c => c.NguoiTaoId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<NganHang>()
                 .HasOne(c => c.NguoiCapNhat)
                 .WithMany()
                 .HasForeignKey(c => c.NguoiCapNhatId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<NganHang>()
                 .HasOne(c => c.NguoiTao)
                 .WithMany()
                 .HasForeignKey(c => c.NguoiTaoId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<NoiKhamBenh>()
                 .HasOne(c => c.NguoiCapNhat)
                 .WithMany()
                 .HasForeignKey(c => c.NguoiCapNhatId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+
             modelBuilder.Entity<NoiKhamBenh>()
                 .HasOne(c => c.NguoiTao)
                 .WithMany()
                 .HasForeignKey(c => c.NguoiTaoId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<PhongBan>()
                 .HasOne(c => c.NguoiCapNhat)
                 .WithMany()
                 .HasForeignKey(c => c.NguoiCapNhatId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<PhongBan>()
-                .HasOne(c => c.NguoiTao)
-                .WithMany()
-                .HasForeignKey(c => c.NguoiTaoId)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<QuocGia>()
-                .HasOne(c => c.NguoiCapNhat)
-                .WithMany()
-                .HasForeignKey(c => c.NguoiCapNhatId)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<QuocGia>()
-                .HasOne(c => c.NguoiTao)
-                .WithMany()
-                .HasForeignKey(c => c.NguoiTaoId)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<TinhThanh>()
-                .HasOne(c => c.NguoiCapNhat)
-                .WithMany()
-                .HasForeignKey(c => c.NguoiCapNhatId)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<TinhThanh>()
-                .HasOne(c => c.NguoiTao)
-                .WithMany()
-                .HasForeignKey(c => c.NguoiTaoId)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<QuanHuyen>()
-                .HasOne(c => c.NguoiCapNhat)
-                .WithMany()
-                .HasForeignKey(c => c.NguoiCapNhatId)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<QuanHuyen>()
-                .HasOne(c => c.NguoiTao)
-                .WithMany()
-                .HasForeignKey(c => c.NguoiTaoId)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<XaPhuong>()
-                .HasOne(c => c.NguoiCapNhat)
-                .WithMany()
-                .HasForeignKey(c => c.NguoiCapNhatId)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<XaPhuong>()
                 .HasOne(c => c.NguoiTao)
                 .WithMany()
                 .HasForeignKey(c => c.NguoiTaoId)
@@ -156,6 +127,60 @@ namespace ems_backend.Data.DataContext
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<NhanVien>()
+                .HasOne(nv => nv.ChiNhanhNganHang) 
+                .WithMany(cn => cn.NhanViens)      
+                .HasForeignKey(nv => nv.ChiNhanhNganHangId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<NhanVien>()
+               .HasOne(nv => nv.PhongBan)
+               .WithMany(pb => pb.NhanViens)
+               .HasForeignKey(nv => nv.PhongBanId)
+               .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<NhanVien>()
+              .HasOne(nv => nv.ChucDanh)
+              .WithMany(cd => cd.NhanViens)
+              .HasForeignKey(nv => nv.ChucDanhId)
+              .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<NhanVien>()
+             .HasOne(nv => nv.NoiKhamBenh)
+             .WithMany(nkb => nkb.NhanViens)
+             .HasForeignKey(nv => nv.NoiKhamBenhId)
+             .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<NhanVien>()
+             .HasOne(nv => nv.XaPhuong)
+             .WithMany(xp => xp.NhanViens)
+             .HasForeignKey(nv => nv.XaPhuongId)
+             .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<NhanVien>()
+             .HasOne(nv => nv.QuanHuyen)
+             .WithMany(qh => qh.NhanViens)
+             .HasForeignKey(nv => nv.QuanHuyenId)
+             .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<NhanVien>()
+             .HasOne(nv => nv.TinhThanh)
+             .WithMany(tt => tt.NhanViens)
+             .HasForeignKey(nv => nv.TinhThanhId)
+             .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<NhanVien>()
+             .HasOne(nv => nv.QuocGia)
+             .WithMany(qg => qg.NhanViens)
+             .HasForeignKey(nv => nv.QuocGiaId)
+             .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<NhanVien>()
+            .HasOne(nv => nv.NganHang)
+            .WithMany(nh => nh.NhanViens)
+            .HasForeignKey(nv => nv.NganHangId)
+            .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

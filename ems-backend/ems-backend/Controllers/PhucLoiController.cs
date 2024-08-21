@@ -16,9 +16,9 @@ namespace ems_backend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DataResponsePhucLoi>>> LayDanhSachPhucLoi()
+        public async Task<IActionResult> LayDanhSachPhucLoi(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
-            return Ok(await _service.LayTatCaPhucLoi());
+            return Ok(await _service.LayTatCaPhucLoi(isActive, pageSize, pageNumber));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<DataResponsePhucLoi>> GetPhucLoi(int id)

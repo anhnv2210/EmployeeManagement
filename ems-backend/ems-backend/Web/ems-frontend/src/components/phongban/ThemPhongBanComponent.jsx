@@ -1,5 +1,5 @@
 import { listNhanVien } from '@/services/NhanVienService';
-import { addPhongBan, checkTenPhongBanExists } from '@/services/PhonBanService';
+import { addPhongBan, checkTenPhongBanExists } from '@/services/PhongBanService';
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ const ThemPhongBanComponent = () => {
     useEffect(() => {
         listNhanVien()
             .then(response => {
-                setNhanViens(response.data);
+                setNhanViens(response.data.data);
             })
             .catch(error => {
                 console.error('Có lỗi xảy ra khi gọi API:', error);

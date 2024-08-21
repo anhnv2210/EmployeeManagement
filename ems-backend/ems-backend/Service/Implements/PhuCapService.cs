@@ -1,4 +1,5 @@
 ﻿using ems_backend.Data.DataContext;
+using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.PhuCapRequest;
@@ -29,13 +30,18 @@ namespace ems_backend.Service.Implements
             return PhuCapConverter.EntityToDTO(phuCap);
         }
 
-        public async Task<IEnumerable<DataResponsePhuCap>> LayTatCaPhuCap()
+        public async Task<PageResult<DataResponsePhuCap>> LayTatCaPhuCap(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
             var query = _context.PhuCaps
                  .Include(pc => pc.NguoiTao)
                  .Include(pc => pc.NguoiCapNhat)
                  .AsQueryable();
-            var result = query.Select(pc => PhuCapConverter.EntityToDTO(pc));
+            if (isActive.HasValue)
+            {
+                query = query.Where(pc => pc.IsActive == isActive.Value);
+            }
+            var result = Pagination.GetPagedData(query.Select(x => PhuCapConverter.EntityToDTO(x)), pageSize, pageNumber);
+
             return result;
         }
 

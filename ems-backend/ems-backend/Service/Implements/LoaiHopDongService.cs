@@ -1,4 +1,5 @@
 ﻿using ems_backend.Data.DataContext;
+using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.LoaiHopDongRequest;
@@ -28,13 +29,17 @@ namespace ems_backend.Service.Implements
             return LoaiHopDongConverter.EntityToDTO(loaiHopDong);
         }
 
-        public async Task<IEnumerable<DataResponseLoaiHopDong>> LayTatCaLoaiHopDong()
+        public async Task<PageResult<DataResponseLoaiHopDong>> LayTatCaLoaiHopDong(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
             var query = _context.LoaiHopDongs
                 .Include(lhd => lhd.NguoiTao)
                 .Include(lhd => lhd.NguoiCapNhat)
                 .AsQueryable();
-            var result = query.Select(lhd => LoaiHopDongConverter.EntityToDTO(lhd));
+            if (isActive.HasValue)
+            {
+                query = query.Where(lhd => lhd.IsActive == isActive.Value);
+            }
+            var result = Pagination.GetPagedData(query.Select(x => LoaiHopDongConverter.EntityToDTO(x)), pageSize, pageNumber);
             return result;
         }
 

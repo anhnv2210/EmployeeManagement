@@ -12,11 +12,6 @@ namespace ems_backend.Models.Converters
                 Id = quocGia.Id,
                 TenQuocGia = quocGia.TenQuocGia,
                 MoTa = quocGia.MoTa,
-                NguoiTaoHoTen = quocGia.NguoiTao?.Hoten,
-                NgayTao = (DateTime)quocGia.NgayTao,
-                NguoiCapNhatHoTen = quocGia.NguoiCapNhat?.Hoten,
-                NgayCapNhat = (DateTime)quocGia.NgayCapNhat,
-                IsActive = quocGia.IsActive,
             };
         }
     }

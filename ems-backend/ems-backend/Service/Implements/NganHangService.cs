@@ -1,5 +1,6 @@
 ﻿using ems_backend.Common.HandleExceptions;
 using ems_backend.Data.DataContext;
+using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.NganHangRequest;
@@ -48,13 +49,17 @@ namespace ems_backend.Service.Implements
             return NganHangConverter.EntityToDTO(nganHang);
         }
 
-        public async Task<IEnumerable<DataResponseNganHang>> LayTatCaNganHang()
+        public async Task<PageResult<DataResponseNganHang>> LayTatCaNganHang(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
             var query = _context.NganHangs
                   .Include(nh => nh.NguoiTao)
                   .Include(nh => nh.NguoiCapNhat)
                   .AsQueryable();
-            var result = query.Select(nh => NganHangConverter.EntityToDTO(nh));
+            if (isActive.HasValue)
+            {
+                query = query.Where(nh => nh.IsActive == isActive.Value);
+            }
+            var result = Pagination.GetPagedData(query.Select(x => NganHangConverter.EntityToDTO(x)), pageSize, pageNumber);
             return result;
         }
 
@@ -110,6 +115,11 @@ namespace ems_backend.Service.Implements
 
             try
             {
+                foreach (var nhanVien in _context.NhanViens)
+                {
+                    if (nhanVien.NganHangId == id)
+                        nhanVien.NganHangId = null;
+                }
                 _context.NganHangs.Remove(nganHang);
                 await _context.SaveChangesAsync();
                 return true;

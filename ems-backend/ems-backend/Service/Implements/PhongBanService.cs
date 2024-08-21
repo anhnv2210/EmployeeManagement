@@ -1,4 +1,5 @@
 ﻿using ems_backend.Data.DataContext;
+using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.PhongBanRequest;
@@ -28,13 +29,18 @@ namespace ems_backend.Service.Implements
             return PhongBanConverter.EntityToDTO(phongBan);
         }
 
-        public async Task<IEnumerable<DataResponsePhongBan>> LayTatCaPhongBan()
+        public async Task<PageResult<DataResponsePhongBan>> LayTatCaPhongBan(bool? isActive, int pageSize, int pageNumber)
         {
             var query = _context.PhongBans
-                .Include(pb => pb.NguoiTao)
-                .Include(pb => pb.NguoiCapNhat)
+                .Include(x => x.NguoiTao)
+                .Include(x => x.NguoiCapNhat)
                 .AsQueryable();
-            var result = query.Select(pb => PhongBanConverter.EntityToDTO(pb));
+            if (isActive.HasValue)
+            {
+                query = query.Where(pb => pb.IsActive == isActive.Value);
+            }
+            var result = Pagination.GetPagedData(query.Select(x => PhongBanConverter.EntityToDTO(x)), pageSize, pageNumber);
+
             return result;
         }
 
@@ -84,6 +90,11 @@ namespace ems_backend.Service.Implements
 
             try
             {
+                foreach (var nhanVien in _context.NhanViens)
+                {
+                    if (nhanVien.PhongBanId == id)
+                        nhanVien.PhongBanId = null;
+                }
                 _context.PhongBans.Remove(phongBan);
                 await _context.SaveChangesAsync();
                 return true;

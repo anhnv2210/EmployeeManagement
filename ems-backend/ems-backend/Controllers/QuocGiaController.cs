@@ -15,9 +15,9 @@ namespace ems_backend.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DataResponseQuocGia>>> LayDanhSachQuocDanh()
+        public async Task<ActionResult<IEnumerable<DataResponseQuocGia>>> LayDanhSachQuocDanh(int pageSize = 10, int pageNumber = 1)
         {
-            return Ok(await _service.LayTatCaQuocGia());
+            return Ok(await _service.LayTatCaQuocGia(pageSize, pageNumber));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<DataResponseQuocGia>> GetQuocGia(int id) { 

@@ -24,7 +24,7 @@ const SuaPhuCapComponent = () => {
         });
 
         listNhanVien().then(response => {
-            setNhanViens(response.data);
+            setNhanViens(response.data.data);
         }).catch(error => {
             console.error(error);
         });

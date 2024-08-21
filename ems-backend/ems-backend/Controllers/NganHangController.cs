@@ -15,9 +15,9 @@ namespace ems_backend.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DataResponseNganHang>>> LayDanhSachNganHang()
+        public async Task<ActionResult<IEnumerable<DataResponseNganHang>>> LayDanhSachNganHang(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
-            return Ok(await _service.LayTatCaNganHang());
+            return Ok(await _service.LayTatCaNganHang(isActive, pageSize, pageNumber));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<DataResponseNganHang>> GetNganHang(int id)

@@ -2,15 +2,11 @@
 {
     public class DataResponseQuanHuyen : DataResponseBase
     {
-        public int Id {  get; set; }
         public string TenQuanHuyen { get; set; }
         public string MoTa { get; set; }
+        public int QuocGiaId {  get; set; }
+        public int TinhThanhId {  get; set; }
         public string TenQuocGia { get; set; }
         public string TenTinhThanh { get; set; }
-        public string TenNguoiTao { get; set; }
-        public string TenNguoiCapNhat { get; set; }
-        public DateTime NgayTao {  get; set; }
-        public DateTime NgayCapNhat { get; set; }
-        public bool IsActive { get; set; }
     }
 }

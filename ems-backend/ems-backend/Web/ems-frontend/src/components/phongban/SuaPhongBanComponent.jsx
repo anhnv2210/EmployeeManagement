@@ -1,8 +1,8 @@
 import { listNhanVien } from '@/services/NhanVienService';
-import { getPhongBanById, updatePhongBan } from '@/services/PhonBanService';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { formatISO } from 'date-fns';
+import { getPhongBanById, updatePhongBan } from '@/services/PhongBanService';
 const SuaPhongBanComponent = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ const SuaPhongBanComponent = () => {
         });
 
         listNhanVien().then(response => {
-            setNhanViens(response.data);
+            setNhanViens(response.data.data);
         }).catch(error => {
             console.error(error);
         });

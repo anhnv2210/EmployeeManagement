@@ -19,7 +19,7 @@ const ThemPhucLoiComponent = () => {
     useEffect(() => {
         listNhanVien()
             .then(response => {
-                setNhanViens(response.data);
+                setNhanViens(response.data.data);
             })
             .catch(error => {
                 console.error('Có lỗi xảy ra khi gọi API:', error);

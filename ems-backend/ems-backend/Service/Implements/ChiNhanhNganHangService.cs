@@ -1,5 +1,6 @@
 ﻿using ems_backend.Common.HandleExceptions;
 using ems_backend.Data.DataContext;
+using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.ChiNhanhNganHang;
@@ -33,11 +34,6 @@ namespace ems_backend.Service.Implements
                 return false;
             }
             return true;
-        }
-
-        public async Task<bool> CheckTenChiNhanhNganHangExists(string tenChiNhanhNganHang, int nganHangId)
-        {
-            return await _context.ChiNhanhNganHangs.AnyAsync(cnnh => cnnh.TenChiNhanhNganHang.ToLower() == tenChiNhanhNganHang.ToLower() && cnnh.NganHangId == nganHangId);
         } 
 
         public async Task<DataResponseChiNhanhNganHang> LayChiNhanhNganHangTheoId(int id)
@@ -50,16 +46,33 @@ namespace ems_backend.Service.Implements
             return ChiNhanhNganHangConverter.EntityToDTO(chiNhanh);
         }
 
-        public async Task<IEnumerable<DataResponseChiNhanhNganHang>> LayTatCaChiNhanhNganHang()
+        public async Task<PageResult<DataResponseChiNhanhNganHang>> LayTatCaChiNhanhNganHang(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
             var query = _context.ChiNhanhNganHangs
                   .Include(cnnh => cnnh.NguoiTao)
                   .Include(cnnh => cnnh.NguoiCapNhat)
                   .Include(cnnh => cnnh.NganHang)
                   .AsQueryable();
-            var result = query.Select(cnnh => ChiNhanhNganHangConverter.EntityToDTO(cnnh));
+            if (isActive.HasValue)
+            {
+                query = query.Where(nh => nh.IsActive == isActive.Value);
+            }
+            var result = Pagination.GetPagedData(query.Select(x => ChiNhanhNganHangConverter.EntityToDTO(x)), pageSize, pageNumber);
             return result;
         }
+
+        public async Task<IEnumerable<DataResponseChiNhanhNganHang>> LayTatCaChiNhanhNganHangByNganHang(int nganHangId)
+        {
+            var query = _context.ChiNhanhNganHangs
+              .Include(cnnh => cnnh.NguoiTao)
+              .Include(cnnh => cnnh.NguoiCapNhat)
+              .Include(cnnh => cnnh.NganHang)
+              .Where(cnnh => cnnh.NganHangId == nganHangId).
+              AsQueryable();
+            return query.Select(x => ChiNhanhNganHangConverter.EntityToDTO(x)); 
+
+        }
+
         public async Task<DataResponseChiNhanhNganHang> SuaChiNhanhNganHang(int id, Request_SuaChiNhanhNganHang request)
         {
             var chiNhanh = await _context.ChiNhanhNganHangs.FindAsync(id);
@@ -113,6 +126,11 @@ namespace ems_backend.Service.Implements
 
             try
             {
+                foreach (var nhanVien in _context.NhanViens)
+                {
+                    if(nhanVien.ChiNhanhNganHangId == id)
+                        nhanVien.ChiNhanhNganHangId = null; 
+                }
                 _context.ChiNhanhNganHangs.Remove(chiNhanh);
                 await _context.SaveChangesAsync();
                 return true;

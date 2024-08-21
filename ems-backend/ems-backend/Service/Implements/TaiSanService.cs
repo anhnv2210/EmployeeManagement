@@ -1,4 +1,5 @@
 ﻿using ems_backend.Data.DataContext;
+using ems_backend.Data.Reponsitories.HandlePagination;
 using ems_backend.Models.Converters;
 using ems_backend.Models.Entities;
 using ems_backend.Models.RequestModel.TaiSanRequest;
@@ -28,13 +29,18 @@ namespace ems_backend.Service.Implements
               .Include(ts => ts.NguoiCapNhat).FirstOrDefaultAsync(ts => ts.Id == id);
             return TaiSanConverter.EntityToDTO(taiSan);
         }
-        public async Task<IEnumerable<DataResponseTaiSan>> LayTatCaTaiSan()
+        public async Task<PageResult<DataResponseTaiSan>> LayTatCaTaiSan(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
             var query = _context.TaiSans
                  .Include(pl => pl.NguoiTao)
                  .Include(pl => pl.NguoiCapNhat)
                  .AsQueryable();
-            var result = query.Select(ts => TaiSanConverter.EntityToDTO(ts));
+            if (isActive.HasValue)
+            {
+                query = query.Where(ts => ts.IsActive == isActive.Value);
+            }
+            var result = Pagination.GetPagedData(query.Select(x => TaiSanConverter.EntityToDTO(x)), pageSize, pageNumber);
+
             return result;
         }
 

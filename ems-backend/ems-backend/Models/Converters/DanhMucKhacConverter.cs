@@ -13,10 +13,12 @@ namespace ems_backend.Models.Converters
                 TenThamSo = danhMucKhac.TenThamSo,
                 GiaTri = danhMucKhac.GiaTri,
                 MoTa = danhMucKhac.MoTa,
+                NguoiTaoId = danhMucKhac.NguoiTaoId,
+                NguoiCapNhatId = danhMucKhac.NguoiCapNhatId,
                 NguoiTaoHoTen = danhMucKhac.NguoiTao?.Hoten,
                 NgayTao = (DateTime)danhMucKhac.NgayTao,
                 NguoiCapNhatHoTen = danhMucKhac.NguoiCapNhat?.Hoten,
-                NgayCapNhat = (DateTime)danhMucKhac.NgayTao,
+                NgayCapNhat = (DateTime)danhMucKhac.NgayCapNhat,
                 IsActive = danhMucKhac.IsActive,
             };
         }

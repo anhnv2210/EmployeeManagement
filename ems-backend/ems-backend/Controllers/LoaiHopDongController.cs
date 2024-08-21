@@ -15,9 +15,9 @@ namespace ems_backend.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DataResponseLoaiHopDong>>> LayDanhSachLoaiHopDong()
+        public async Task<ActionResult<IEnumerable<DataResponseLoaiHopDong>>> LayDanhSachLoaiHopDong(bool? isActive, int pageSize = 10, int pageNumber = 1)
         {
-            return Ok(await _service.LayTatCaLoaiHopDong());
+            return Ok(await _service.LayTatCaLoaiHopDong(isActive,pageSize,pageNumber));
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<DataResponseLoaiHopDong>> GetLoaiHopDong(int id)
